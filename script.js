@@ -4,13 +4,25 @@ const taskList = document.getElementById('taskList');
 const filter = document.getElementById('filter')
 const taskCounter = document.getElementById('taskCounter')
 const themeToggle = document.getElementById('themeToggle')
+const toggleFilter = document.getElementById('toggleFilter')
+const filterPanel = document.querySelector('.filter-panel')
 
 // Inicializar tareas al cargar la página
 displayTasks();
 updateTaskCounter()
 
+// Agregar nueva tarea al presionar 'Enter'
+taskInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        addTaskFromInput()
+    }
+})
+
+// Agregar nueva tarea al hacer clic en el botón
+addButton.addEventListener('click', addTaskFromInput)
+
 // Agregar nueva tarea
-addButton.addEventListener('click', () => {
+function addTaskFromInput() {
     const taskText = taskInput.value.trim();
     if (taskText !== '') {
         const newTask = { text: taskText, completed: false };
@@ -18,7 +30,17 @@ addButton.addEventListener('click', () => {
         taskInput.value = '';
         updateTaskCounter()
     }
-});
+}
+
+// Expandir/contraer el panel lateral
+toggleFilter.addEventListener('click', () => {
+    filterPanel.classList.toggle('collapsed')
+})
+
+// Filtrar tareas al cambiar el filtro
+filter.addEventListener('change', () => {
+    displayTasks()
+})
 
 // Filtrar tareas al cambiar el filtro
 filter.addEventListener('change', () => {
