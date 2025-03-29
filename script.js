@@ -29,7 +29,8 @@ function createTaskElement(task) {
     const taskItem = document.createElement('li');
     taskItem.innerHTML = `
         <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}/>
-        <span>${task.text}</span>
+        <span class="task-text">${task.text}</span>
+        <button class="editButton">Edit</button>
         <button class="deleteButton">Delete</button>
     `;
     if (task.completed) taskItem.classList.add('completed');
@@ -39,6 +40,7 @@ function createTaskElement(task) {
 // Agregar tarea al DOM y al almacenamiento local
 function addTask(task) {
     const taskItem = createTaskElement(task);
+    taskItem.classList.add('task-added')
     taskList.appendChild(taskItem);
 
     const tasks = getTasksFromLocalStorage();
@@ -79,19 +81,71 @@ taskList.addEventListener('click', (event) => {
 
     if (target.classList.contains('deleteButton')) {
         // Eliminar tarea
-        taskItem.remove();
-        tasks.splice(taskIndex, 1);
-        saveTasksToLocalStorage(tasks);
+        // Agregar clase de animación para antes de eliminar
+        taskItem.classList.add('task-deleted');
+        setTimeout(() => {
+            taskItem.remove();
+            tasks.splice(taskIndex, 1);
+            saveTasksToLocalStorage(tasks);   
+        }, 500); // Espera a que termine la animación
     } else if (target.classList.contains('task-checkbox')) {
         // Marcar como completado/incompleto
         const isChecked = target.checked;
         taskItem.classList.toggle('completed', isChecked);
+
+        // Agregar animación al cambioar de estado
+        taskItem.classList.add('task-status-changed')
+        setTimeout(() => taskItem.classList.remove('task-status-changed'), 500);
+
         tasks[taskIndex].completed = isChecked;
         saveTasksToLocalStorage(tasks);
+    } else if (target.classList.contains('editButton')) {
+        const taskTextElement = taskItem.querySelector('.task-text')
+        if (!taskTextElement) {
+            console.error('No se encontró el elemento con la clase .task-text')
+            return;
+        }
+        const currentText = taskTextElement.textContent;
+
+        const input = document.createElement('input')
+        input.type = 'text'
+        input.value = currentText
+        input.classList.add('editInput')
+
+        taskItem.replaceChild(input, taskTextElement)
+
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') saveEdit(input, taskItem, taskIndex, tasks)
+        })
+
+        input.focus()
     }
 
     updateTaskCounter()
 });
+
+function saveEdit(input, taskItem, taskIndex, tasks) {
+    const newText = input.value.trim()
+
+    if (newText !== '') {
+        const taskTextElement = document.createElement('span')
+        taskTextElement.classList.add('task-text')
+        taskTextElement.textContent = newText
+
+        // Reemplazar el campo de entrada con el nuevo texto
+        taskItem.replaceChild(taskTextElement, input)
+        
+        // Resaltar la tarea editada
+        taskItem.classList.add('task-edited')
+        setTimeout(() => taskItem.classList.remove('task-edited'), 1000);
+
+        tasks[taskIndex].text = newText
+        saveTasksToLocalStorage(tasks)
+    } else {
+        alert('Task text cannot be empty!')
+        input.focus()
+    }
+}
 
 // Guardar tareas en el almacenamiento local
 function saveTasksToLocalStorage(tasks) {

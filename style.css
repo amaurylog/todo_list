@@ -123,3 +123,76 @@ li button:hover {
     margin-bottom: 15px;
     text-align: center;
 }
+
+li .editButton {
+    background-color: #ffc107;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-left: 5px;
+}
+
+li .editButton:hover {
+    background-color: #e0a800;
+    transform: scale(1.1);
+}
+
+.task-added {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.task-deleted {
+    animation: fadeOut 0.5s ease-out;
+    opacity: 0;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Resaltar Tarea Editada */
+.task-edited {
+    animation: highlight 1s ease-out;
+}
+
+@keyframes highlight {
+    from {
+        background-color: #ffeb3b;
+    }
+    to {
+        background-color: transparent;
+    }
+}
+
+/* Animación al cambiar estado */
+.task-edit-changed {
+    animation: pulse 0.5s ease-out;
+}
+
+@keyframes pulse {
+    from{
+        transform: scale(1);
+    }
+    to{
+        transform: scale(1.05);
+    }
+}
