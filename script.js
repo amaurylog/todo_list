@@ -3,6 +3,7 @@ const addButton = document.getElementById('addButton');
 const taskList = document.getElementById('taskList');
 const filter = document.getElementById('filter')
 const taskCounter = document.getElementById('taskCounter')
+const themeToggle = document.getElementById('themeToggle')
 
 // Inicializar tareas al cargar la página
 displayTasks();
@@ -163,3 +164,38 @@ function updateTaskCounter() {
     const pendingTasks = tasks.filter(task => !task.completed).length;
     taskCounter.textContent = `Pending tasks: ${pendingTasks}`;
 }
+
+// Función para alternar entre temas
+function toggleTheme() {
+    const isDarkMode = document.body.classList.toggle('dark-mode')
+    
+    // Cambiar el icono y tooltip según el tema
+    if (isDarkMode) {
+        themeToggle.textContent = '🌙' // Icono de luna para modo oscuro
+        themeToggle.setAttribute('title', 'Switch to Light Mode')
+    } else {
+        themeToggle.textContent = '🌞' // Icono de sol para modo oscuro
+        themeToggle.setAttribute('title', 'Switch to Dark Mode')
+    }    
+
+    // Guardar la preferencia en localStorage
+    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light')
+}
+
+// Cargar el tema desde localStorage al cargar la página
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode')
+        themeToggle.textContent = '🌙' // Icono de luna para modo oscuro
+        themeToggle.setAttribute('title', 'Switch to Light Mode')
+    } else {
+        themeToggle.textContent = '🌞' // Icono de sol para modo oscuro
+        themeToggle.setAttribute('title', 'Switch to Dark Mode')
+    }
+}
+
+// Agregar evento al botón de alternar tema
+themeToggle.addEventListener('click', toggleTheme)
+
+loadTheme();

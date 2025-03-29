@@ -8,6 +8,90 @@ body {
     min-height: 100vh;
 }
 
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .container {
+    background-color: #1e1e1e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode input[type="text"],
+body.dark-mode select {
+    background-color: #333333;
+    color: #ffffff;
+    border: 1px solid #555555;
+}
+
+body.dark-mode button {
+    background-color: #444444;
+    color: #ffffff;
+}
+
+body.dark-mode button:hover {
+    background-color: #666666;
+}
+
+body.dark-mode .task-text {
+    color: #cccccc;
+}
+
+body.dark-mode .completed {
+    color: #888888;
+}
+
+/* Botón para alternar entre Temas */
+.theme-toggle {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3 ease, color 0.3s ease;
+    color: #333;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.2);
+    color: #007bff;
+}
+
+/* Tooltip para el botón */
+.theme-toggle[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    top: 40px;
+    right: 50%;
+    background-color: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.theme-toggle[title]:hover::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: 80%;
+    transform: translateX(80%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #333 transparent;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
 .container {
     background-color: #ffffff;
     padding: 20px;
